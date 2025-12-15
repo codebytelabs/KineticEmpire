@@ -18,6 +18,7 @@ from .adx_filter import OptimizedADXFilter
 from .volume_confirmer import OptimizedVolumeConfirmer
 from .portfolio_risk import OptimizedPortfolioRiskGuard
 from .parameter_adjuster import ParameterAdjuster
+from .integration import OptimizedTradingSystem, get_optimized_system, reset_optimized_system
 
 __all__ = [
     "MarketRegime",
@@ -36,4 +37,7 @@ __all__ = [
     "OptimizedVolumeConfirmer",
     "OptimizedPortfolioRiskGuard",
     "ParameterAdjuster",
+    "OptimizedTradingSystem",
+    "get_optimized_system",
+    "reset_optimized_system",
 ]
