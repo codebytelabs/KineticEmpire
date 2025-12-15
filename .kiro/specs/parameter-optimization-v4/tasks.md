@@ -1,120 +1,120 @@
 # Implementation Plan
 
-- [ ] 1. Create optimized parameter models and configuration
-  - [ ] 1.1 Create data models for optimized parameters
+- [x] 1. Create optimized parameter models and configuration
+  - [x] 1.1 Create data models for optimized parameters
     - Create MarketRegime enum, StopResult, RSIResult, ADXResult, VolumeResult, RiskCheckResult dataclasses
     - Define OptimizedConfig class with all parameter constants
     - _Requirements: 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 8.1_
-  - [ ] 1.2 Write property test for config parameter bounds
+  - [x] 1.2 Write property test for config parameter bounds
     - **Property 3: Leverage Hard Cap Invariant**
     - **Validates: Requirements 2.1**
 
-- [ ] 2. Implement OptimizedATRStopCalculator
-  - [ ] 2.1 Create ATR stop calculator with regime-adaptive multipliers
+- [x] 2. Implement OptimizedATRStopCalculator
+  - [x] 2.1 Create ATR stop calculator with regime-adaptive multipliers
     - Implement get_multiplier() method with regime-based logic
     - Implement calculate_stop() with max loss enforcement
     - Add position size reduction when max loss exceeded
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5_
-  - [ ] 2.2 Write property test for ATR multiplier regime adaptation
+  - [x] 2.2 Write property test for ATR multiplier regime adaptation
     - **Property 1: ATR Stop Multiplier Regime Adaptation**
     - **Validates: Requirements 1.1, 1.2, 1.3, 9.2, 9.4**
-  - [ ] 2.3 Write property test for maximum loss invariant
+  - [x] 2.3 Write property test for maximum loss invariant
     - **Property 2: Maximum Loss Invariant**
     - **Validates: Requirements 1.4, 1.5**
 
-- [ ] 3. Implement OptimizedLeverageCalculator
-  - [ ] 3.1 Create leverage calculator with hard cap and confidence tiers
+- [x] 3. Implement OptimizedLeverageCalculator
+  - [x] 3.1 Create leverage calculator with hard cap and confidence tiers
     - Implement calculate_leverage() with confidence tier logic
     - Add regime-based reduction for choppy/volatile markets
     - Enforce hard cap of 8x
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6_
-  - [ ] 3.2 Write property test for leverage confidence tiers
+  - [x] 3.2 Write property test for leverage confidence tiers
     - **Property 4: Leverage Confidence Tiers**
     - **Validates: Requirements 2.2, 2.3, 2.4, 2.5**
-  - [ ] 3.3 Write property test for leverage regime reduction
+  - [x] 3.3 Write property test for leverage regime reduction
     - **Property 5: Leverage Regime Reduction**
     - **Validates: Requirements 2.6, 9.3**
 
-- [ ] 4. Implement OptimizedPositionSizer
-  - [ ] 4.1 Create position sizer with quarter-Kelly
+- [x] 4. Implement OptimizedPositionSizer
+  - [x] 4.1 Create position sizer with quarter-Kelly
     - Implement calculate_kelly() with win rate and win/loss ratio
     - Implement calculate_position_size() with Kelly fraction
     - Add win rate threshold for reduced fraction
     - Enforce 25% capital cap
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
-  - [ ] 4.2 Write property test for Kelly fraction consistency
+  - [x] 4.2 Write property test for Kelly fraction consistency
     - **Property 6: Kelly Fraction Consistency**
     - **Validates: Requirements 3.1, 3.5**
-  - [ ] 4.3 Write property test for Kelly non-negative output
+  - [x] 4.3 Write property test for Kelly non-negative output
     - **Property 7: Kelly Non-Negative Output**
     - **Validates: Requirements 3.3**
-  - [ ] 4.4 Write property test for position size cap
+  - [x] 4.4 Write property test for position size cap
     - **Property 8: Position Size Cap Invariant**
     - **Validates: Requirements 3.4**
 
-- [ ] 5. Checkpoint - Ensure all tests pass
+- [x] 5. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 6. Implement OptimizedTrailingStop
-  - [ ] 6.1 Create trailing stop with regime-adaptive activation
+- [x] 6. Implement OptimizedTrailingStop
+  - [x] 6.1 Create trailing stop with regime-adaptive activation
     - Implement should_activate() with regime-based thresholds
     - Implement update_stop() with step size logic
     - Ensure stop only moves in favorable direction
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6_
-  - [ ] 6.2 Write property test for trailing stop activation threshold
+  - [x] 6.2 Write property test for trailing stop activation threshold
     - **Property 9: Trailing Stop Activation Threshold**
     - **Validates: Requirements 4.1, 4.4, 4.5, 9.1**
-  - [ ] 6.3 Write property test for trailing stop monotonicity
+  - [x] 6.3 Write property test for trailing stop monotonicity
     - **Property 10: Trailing Stop Monotonicity**
     - **Validates: Requirements 4.2, 4.3**
 
-- [ ] 7. Implement OptimizedRSIFilter
-  - [ ] 7.1 Create RSI filter with optimized thresholds
+- [x] 7. Implement OptimizedRSIFilter
+  - [x] 7.1 Create RSI filter with optimized thresholds
     - Implement evaluate_entry() with 25/75 thresholds
     - Add confirmation requirement for mid-range RSI
     - Add divergence bonus logic
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
-  - [ ] 7.2 Write property test for RSI entry thresholds
+  - [x] 7.2 Write property test for RSI entry thresholds
     - **Property 11: RSI Entry Thresholds**
     - **Validates: Requirements 5.1, 5.2**
-  - [ ] 7.3 Write property test for RSI confirmation requirement
+  - [x] 7.3 Write property test for RSI confirmation requirement
     - **Property 12: RSI Confirmation Requirement**
     - **Validates: Requirements 5.3**
-  - [ ] 7.4 Write property test for RSI divergence bonus
+  - [x] 7.4 Write property test for RSI divergence bonus
     - **Property 13: RSI Divergence Bonus**
     - **Validates: Requirements 5.5**
 
-- [ ] 8. Implement OptimizedADXFilter
-  - [ ] 8.1 Create ADX filter with optimized thresholds
+- [x] 8. Implement OptimizedADXFilter
+  - [x] 8.1 Create ADX filter with optimized thresholds
     - Implement evaluate_trend() with 20/15 thresholds
     - Add position size reduction for weak trends
     - Add confidence bonus for strong trends
     - _Requirements: 6.1, 6.2, 6.3, 6.4_
-  - [ ] 8.2 Write property test for ADX trend classification
+  - [x] 8.2 Write property test for ADX trend classification
     - **Property 14: ADX Trend Classification**
     - **Validates: Requirements 6.1, 6.2**
-  - [ ] 8.3 Write property test for ADX position adjustment
+  - [x] 8.3 Write property test for ADX position adjustment
     - **Property 15: ADX Position Adjustment**
     - **Validates: Requirements 6.3, 6.4**
 
-- [ ] 9. Implement OptimizedVolumeConfirmer
-  - [ ] 9.1 Create volume confirmer with enhanced requirements
+- [x] 9. Implement OptimizedVolumeConfirmer
+  - [x] 9.1 Create volume confirmer with enhanced requirements
     - Implement confirm_volume() with 1.5x threshold
     - Add position reduction for low volume
     - Add confidence bonus for volume spikes
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_
-  - [ ] 9.2 Write property test for volume confirmation threshold
+  - [x] 9.2 Write property test for volume confirmation threshold
     - **Property 16: Volume Confirmation Threshold**
     - **Validates: Requirements 7.1**
-  - [ ] 9.3 Write property test for volume position adjustment
+  - [x] 9.3 Write property test for volume position adjustment
     - **Property 17: Volume Position Adjustment**
     - **Validates: Requirements 7.2, 7.3**
 
-- [ ] 10. Checkpoint - Ensure all tests pass
+- [x] 10. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 11. Implement OptimizedPortfolioRiskGuard
-  - [ ] 11.1 Create portfolio risk guard with tighter limits
+- [x] 11. Implement OptimizedPortfolioRiskGuard
+  - [x] 11.1 Create portfolio risk guard with tighter limits
     - Implement can_open_position() with all checks
     - Add position limit (8 max)
     - Add margin limit (80% max)
@@ -122,29 +122,29 @@
     - Add correlation limit logic
     - Add weekly loss reduction
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6_
-  - [ ] 11.2 Write property test for portfolio position limit
+  - [x] 11.2 Write property test for portfolio position limit
     - **Property 18: Portfolio Position Limit**
     - **Validates: Requirements 8.1**
-  - [ ] 11.3 Write property test for portfolio margin limit
+  - [x] 11.3 Write property test for portfolio margin limit
     - **Property 19: Portfolio Margin Limit**
     - **Validates: Requirements 8.2**
-  - [ ] 11.4 Write property test for daily loss circuit breaker
+  - [x] 11.4 Write property test for daily loss circuit breaker
     - **Property 20: Daily Loss Circuit Breaker**
     - **Validates: Requirements 8.3**
-  - [ ] 11.5 Write property test for correlation position limit
+  - [x] 11.5 Write property test for correlation position limit
     - **Property 21: Correlation Position Limit**
     - **Validates: Requirements 8.4**
-  - [ ] 11.6 Write property test for weekly loss position reduction
+  - [x] 11.6 Write property test for weekly loss position reduction
     - **Property 22: Weekly Loss Position Reduction**
     - **Validates: Requirements 8.6**
 
-- [ ] 12. Implement regime-adaptive parameter adjuster
-  - [ ] 12.1 Create parameter adjuster that coordinates all components
+- [x] 12. Implement regime-adaptive parameter adjuster
+  - [x] 12.1 Create parameter adjuster that coordinates all components
     - Implement get_adjusted_parameters() method
     - Add conservative defaults for low-confidence regime detection
     - Wire all optimized calculators together
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6_
-  - [ ] 12.2 Write property test for regime conservative defaults
+  - [x] 12.2 Write property test for regime conservative defaults
     - **Property 23: Regime Conservative Defaults**
     - **Validates: Requirements 9.6**
 
