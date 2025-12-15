@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/persistence/database.py
+# hypothesis_version: 6.148.5
+
+[0.0, ' AND pair = ?', ' LIMIT ?', 'DELETE FROM trades', 'amount', 'data/trades.db', 'entry_price', 'entry_timestamp', 'exit_price', 'exit_reason', 'exit_timestamp', 'id', 'pair', 'profit_loss', 'regime', 'stake_amount', 'stop_loss']

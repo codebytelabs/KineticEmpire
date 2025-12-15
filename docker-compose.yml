@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  kinetic-empire:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kinetic-empire-bot
+    restart: unless-stopped
+    environment:
+      - EXCHANGE_API_KEY=${EXCHANGE_API_KEY}
+      - EXCHANGE_API_SECRET=${EXCHANGE_API_SECRET}
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config:ro
+    ports:
+      - "8080:8080"
+    networks:
+      - kinetic-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  kinetic-network:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local

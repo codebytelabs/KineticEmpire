@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/alpha/trailing.py
+# hypothesis_version: 6.148.5
+
+[0.5, 2.0, 3.0, 'LONG', 'atr', 'close']

@@ -1,0 +1,298 @@
+# Implementation Plan
+
+- [x] 1. Set up project structure and Freqtrade integration
+  - [x] 1.1 Initialize project with Freqtrade dependencies
+    - Create project directory structure: `src/`, `tests/`, `config/`, `data/`
+    - Set up `pyproject.toml` with dependencies: freqtrade, ccxt, pandas, numpy, hypothesis, pytest
+    - Create `.env.example` template and load environment variables
+    - _Requirements: 12.1_
+  - [x] 1.2 Create base configuration module
+    - Implement `ConfigManager` class to load and validate `config.json`
+    - Define required fields validation (exchange credentials, stake_currency, max_open_trades)
+    - Implement blacklist pattern loading
+    - _Requirements: 12.1, 12.2, 12.3, 12.4_
+  - [x] 1.3 Write property test for configuration validation
+    - **Property 26: Configuration Validation**
+    - **Validates: Requirements 12.2, 12.3**
+  - [x] 1.4 Write unit tests for configuration module
+    - Test valid config loading
+    - Test missing required fields rejection
+    - Test blacklist pattern parsing
+    - _Requirements: 12.1, 12.2, 12.3, 12.4_
+
+- [x] 2. Implement core data models and serialization
+  - [x] 2.1 Create data model classes
+    - Implement `PairData`, `Trade`, `TradeOpen`, `TradeClose` dataclasses
+    - Implement `Regime`, `ExitReason` enums
+    - Implement `Position`, `ScannerConfig`, `BacktestResult` dataclasses
+    - _Requirements: 10.1, 10.2_
+  - [x] 2.2 Implement trade serialization/deserialization
+    - Create JSON serialization for Trade objects
+    - Create JSON deserialization for Trade objects
+    - Handle datetime and enum serialization
+    - _Requirements: 10.4_
+  - [x] 2.3 Write property test for trade serialization round trip
+    - **Property 25: Trade Serialization Round Trip**
+    - **Validates: Requirements 10.4**
+
+- [x] 3. Implement technical indicator calculator
+  - [x] 3.1 Create indicator calculation module
+    - Implement `calculate_ema(series, period)` using pandas ewm
+    - Implement `calculate_roc(series, period)` as percentage change
+    - Implement `calculate_rsi(series, period)` using standard RSI formula
+    - Implement `calculate_atr(df, period)` using true range
+    - _Requirements: 2.1, 2.2, 2.3, 2.4_
+  - [x] 3.2 Implement multi-timeframe data merging
+    - Create `merge_informative(df_5m, df_1h, df_daily)` function
+    - Align higher timeframe data with 5m candles using forward fill
+    - _Requirements: 2.5, 2.6_
+  - [x] 3.3 Write property tests for indicator calculations
+    - **Property 3: Indicator Calculation Determinism**
+    - **Property 4: RSI Bounds**
+    - **Property 5: ATR Non-Negativity**
+    - **Validates: Requirements 2.1, 2.2, 2.3, 2.4**
+  - [x] 3.4 Write unit tests for indicator edge cases
+    - Test EMA with insufficient data
+    - Test RSI at extreme values (all gains, all losses)
+    - Test ATR with zero volatility
+    - _Requirements: 2.1, 2.2, 2.3, 2.4_
+
+- [x] 4. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 5. Implement scanner module with filter pipeline
+  - [x] 5.1 Create scanner filter functions
+    - Implement `is_blacklisted(pair, patterns)` with regex matching
+    - Implement `filter_by_spread(pairs, max_spread=0.005)`
+    - Implement `filter_by_price(pairs, min_price=0.001)`
+    - Implement `filter_by_volatility(pairs, min_vol=0.02, max_vol=0.50)`
+    - Implement `filter_by_performance(pairs, min_return=0.0)`
+    - _Requirements: 1.2, 1.3, 1.4, 1.5, 1.6_
+  - [x] 5.2 Implement scanner pipeline and sorting
+    - Create `ScannerModule` class with filter pipeline
+    - Implement volume-based initial selection (top 70)
+    - Implement volatility sorting (descending) and limit to 20
+    - _Requirements: 1.1, 1.7_
+  - [x] 5.3 Write property tests for scanner filters
+    - **Property 1: Scanner Filter Pipeline Correctness**
+    - **Property 2: Scanner Output Ordering and Limit**
+    - **Property 27: Blacklist Pattern Application**
+    - **Validates: Requirements 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 12.4**
+  - [x] 5.4 Write unit tests for scanner edge cases
+    - Test empty pair list
+    - Test all pairs filtered out
+    - Test exactly 20 pairs remaining
+    - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7_
+
+- [x] 6. Implement regime classifier
+  - [x] 6.1 Create regime classification module
+    - Implement `RegimeClassifier` class
+    - Implement `classify(btc_close, btc_ema50)` returning BULL or BEAR
+    - Implement `get_max_trades(regime)` returning 20 or 3
+    - _Requirements: 4.1, 4.2, 4.3, 4.4_
+  - [x] 6.2 Write property tests for regime classification
+    - **Property 7: Regime Classification Determinism**
+    - **Property 8: Regime Determines Max Trades**
+    - **Validates: Requirements 4.1, 4.2, 4.3, 4.4**
+
+- [x] 7. Implement entry signal generator
+  - [x] 7.1 Create entry signal module
+    - Implement `EntrySignalGenerator` class
+    - Implement `check_macro_trend(close_1h, ema50_1h)`
+    - Implement `check_micro_trend(close_5m, ema50_5m)`
+    - Implement `check_momentum(roc, threshold=1.5)`
+    - Implement `check_pullback(rsi, min=45, max=65)`
+    - Implement `check_volume(volume, mean_24h)`
+    - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
+  - [x] 7.2 Implement combined entry condition check
+    - Create `check_entry_conditions(df, regime, open_trades)` combining all checks
+    - Integrate regime-based trade limit check
+    - _Requirements: 3.6, 4.5_
+  - [x] 7.3 Write property tests for entry signals
+    - **Property 6: Entry Signal Requires All Conditions**
+    - **Property 9: Trade Limit Enforcement**
+    - **Validates: Requirements 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 4.5**
+
+- [x] 8. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 9. Implement Kelly Criterion position sizer
+  - [x] 9.1 Create position sizing module
+    - Implement `KellyCriterionSizer` class
+    - Implement `calculate_win_rate(trades)` as wins/total
+    - Implement `calculate_kelly_fraction(win_rate, reward_risk_ratio)`
+    - Implement `clamp_stake(stake_pct, min=0.5, max=5.0)`
+    - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
+  - [x] 9.2 Implement stake calculation with history check
+    - Create `calculate_stake(pair, balance, trade_history)` method
+    - Apply 1% default when < 10 trades exist
+    - _Requirements: 5.1, 5.2_
+  - [x] 9.3 Write property tests for Kelly Criterion
+    - **Property 10: Kelly Criterion Default for Insufficient History**
+    - **Property 11: Win Rate Calculation Correctness**
+    - **Property 12: Kelly Fraction Formula Correctness**
+    - **Property 13: Stake Clamping**
+    - **Validates: Requirements 5.2, 5.3, 5.4, 5.5**
+
+- [x] 10. Implement stop loss manager
+  - [x] 10.1 Create stop loss module
+    - Implement `StopLossManager` class
+    - Implement `calculate_stop_loss(entry_price, atr, multiplier=2.0)`
+    - _Requirements: 6.1_
+  - [x] 10.2 Write property test for stop loss calculation
+    - **Property 14: Stop Loss Calculation**
+    - **Validates: Requirements 6.1**
+
+- [x] 11. Implement trailing stop manager
+  - [x] 11.1 Create trailing stop module
+    - Implement `TrailingStopManager` class
+    - Implement `should_activate(profit_pct, threshold=2.5)`
+    - Implement `calculate_trailing_stop(price, atr, multiplier=1.5)`
+    - Implement `update_stop_if_higher(new_stop, current_stop)`
+    - _Requirements: 7.1, 7.2, 7.3, 7.4_
+  - [x] 11.2 Write property tests for trailing stops
+    - **Property 15: Trailing Stop Activation Threshold**
+    - **Property 16: Trailing Stop Calculation**
+    - **Property 17: Trailing Stop Monotonicity**
+    - **Validates: Requirements 7.1, 7.2, 7.3, 7.4**
+
+- [x] 12. Implement exit signal generator
+  - [x] 12.1 Create exit signal module
+    - Implement `ExitSignalGenerator` class
+    - Implement `check_trend_break(close, ema50, volume, mean_volume)`
+    - Implement `check_stop_loss(price, stop_price)`
+    - _Requirements: 8.1, 8.2, 8.3, 8.4_
+  - [x] 12.2 Write property test for exit signals
+    - **Property 18: Exit Signal on Trend Break with Volume**
+    - **Validates: Requirements 8.2, 8.3**
+
+- [x] 13. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 14. Implement flash crash protection
+  - [x] 14.1 Create flash crash protection module
+    - Implement `FlashCrashProtection` class
+    - Implement `detect_flash_crash(btc_prices, threshold=5.0, window_hours=1)`
+    - Implement `is_market_stable(btc_prices, ema50, recovery_hours=4)`
+    - Implement `get_emergency_max_trades()` returning 3
+    - _Requirements: 14.1, 14.2, 14.3_
+  - [x] 14.2 Write property tests for flash crash protection
+    - **Property 30: Flash Crash Detection**
+    - **Property 31: Flash Crash Response**
+    - **Property 32: Market Stability Recovery**
+    - **Validates: Requirements 14.1, 14.2, 14.3**
+
+- [x] 15. Implement trade persistence layer
+  - [x] 15.1 Create database persistence module
+    - Implement `TradePersistence` class with SQLite backend
+    - Implement `save_trade_open(trade)` storing all required fields
+    - Implement `save_trade_close(trade)` storing exit details
+    - Implement `get_trades_by_pair(pair, limit)`
+    - Implement `get_trades_by_date_range(start, end)`
+    - _Requirements: 10.1, 10.2, 10.3_
+  - [x] 15.2 Write property test for trade query filtering
+    - **Property 24: Trade Query Filtering**
+    - **Validates: Requirements 10.3**
+  - [x] 15.3 Write property test for trade persistence completeness
+    - **Property 23: Trade Persistence Completeness**
+    - **Validates: Requirements 10.1, 10.2**
+
+- [x] 16. Implement exchange integration layer
+  - [x] 16.1 Create exchange module with rate limiting
+    - Implement `ExchangeModule` class wrapping CCXT
+    - Implement rate limiter with 200ms minimum between requests
+    - Implement authentication with API key/secret from config
+    - _Requirements: 9.1, 9.2_
+  - [x] 16.2 Implement order execution
+    - Implement `place_limit_order(pair, side, amount, price)`
+    - Implement `place_market_order(pair, side, amount)`
+    - Implement `place_stop_loss_order(pair, amount, stop_price)`
+    - Implement order timeout handling (10min entry, 30min exit)
+    - _Requirements: 9.3, 9.4_
+  - [x] 16.3 Implement FailSafe mode
+    - Track consecutive 5xx errors with timestamps
+    - Enter FailSafe mode after 5 minutes of errors
+    - Halt new signal processing in FailSafe mode
+    - _Requirements: 9.5_
+  - [x] 16.4 Write property tests for exchange module
+    - **Property 19: Rate Limiting Enforcement**
+    - **Property 20: Order Type Selection**
+    - **Property 21: Order Timeout Enforcement**
+    - **Property 22: FailSafe Mode Trigger**
+    - **Validates: Requirements 9.2, 9.3, 9.4, 9.5**
+
+- [x] 17. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 18. Implement Freqtrade strategy class
+  - [x] 18.1 Create KineticEmpire strategy
+    - Create `KineticEmpire.py` inheriting from `IStrategy`
+    - Implement `informative_pairs()` returning BTC/USDT daily
+    - Implement `populate_indicators()` with all indicator calculations
+    - Implement `populate_entry_trend()` with entry signal logic
+    - Implement `populate_exit_trend()` with exit signal logic
+    - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 8.1, 8.2, 8.3_
+  - [x] 18.2 Implement custom methods
+    - Implement `custom_stake_amount()` with Kelly Criterion
+    - Implement `custom_stoploss()` with ATR-based stops
+    - Implement trailing stop logic in `custom_stoploss()`
+    - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 6.1, 7.1, 7.2, 7.3, 7.4_
+  - [x] 18.3 Integrate regime filter and flash crash protection
+    - Add BTC regime check to entry conditions
+    - Add flash crash detection to entry conditions
+    - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 14.1, 14.2, 14.3_
+
+- [x] 19. Implement Telegram notification handler
+  - [x] 19.1 Create Telegram integration module
+    - Implement trade execution notifications
+    - Implement `/status` command handler
+    - Implement `/profit` command handler
+    - Implement `/stop` emergency kill switch
+    - _Requirements: 11.1, 11.2, 11.3, 11.4_
+  - [x] 19.2 Write unit tests for Telegram handlers
+    - Test message formatting
+    - Test command parsing
+    - Test kill switch state change
+    - _Requirements: 11.1, 11.2, 11.3, 11.4_
+
+- [x] 20. Implement backtesting module
+  - [x] 20.1 Create backtest engine wrapper
+    - Implement historical data loading
+    - Implement slippage and fee simulation
+    - _Requirements: 13.1, 13.2_
+  - [x] 20.2 Implement backtest reporting
+    - Calculate win rate, Sharpe ratio, max drawdown, total return
+    - Generate trade-by-trade results
+    - _Requirements: 13.3, 13.4_
+  - [x] 20.3 Write property tests for backtest calculations
+    - **Property 28: Backtest Fee and Slippage Application**
+    - **Property 29: Backtest Report Completeness**
+    - **Validates: Requirements 13.2, 13.3**
+
+- [x] 21. Create configuration files and deployment setup
+  - [x] 21.1 Create production configuration
+    - Create `config.json` with all required parameters
+    - Configure Binance Futures testnet credentials
+    - Configure Telegram bot token
+    - Set up pairlist with blacklist patterns
+    - _Requirements: 12.1, 12.4_
+  - [x] 21.2 Create Docker deployment files
+    - Create `Dockerfile` for Freqtrade with custom strategy
+    - Create `docker-compose.yml` for full stack deployment
+    - Configure volume mounts for data persistence
+    - _Requirements: 9.1_
+
+- [x] 22. Final Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 23. Integration testing and dry run validation
+  - [x] 23.1 Run integration tests on testnet
+    - Verify exchange connectivity with Binance testnet
+    - Verify order placement and cancellation
+    - Verify data fetching and indicator calculation
+    - _Requirements: 9.1, 9.2, 9.3_
+  - [x] 23.2 Execute dry run backtest
+    - Run 90-day backtest on historical data
+    - Validate performance metrics meet targets (>60% win rate, <15% drawdown)
+    - Review trade-by-trade results
+    - _Requirements: 13.1, 13.2, 13.3, 13.4_

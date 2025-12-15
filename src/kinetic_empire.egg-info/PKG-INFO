@@ -1,0 +1,241 @@
+Metadata-Version: 2.4
+Name: kinetic-empire
+Version: 1.0.0
+Summary: Automated High-Frequency Crypto Asset Management System
+Author: Kinetic Empire Team
+License: MIT
+Project-URL: Homepage, https://github.com/kinetic-empire/kinetic-empire
+Project-URL: Documentation, https://github.com/kinetic-empire/kinetic-empire#readme
+Keywords: crypto,trading,bot,freqtrade,algorithmic-trading
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: freqtrade>=2024.1
+Requires-Dist: ccxt>=4.0.0
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: numpy>=1.24.0
+Requires-Dist: ta-lib>=0.4.28
+Requires-Dist: python-telegram-bot>=20.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: sqlalchemy>=2.0.0
+Requires-Dist: aiosqlite>=0.19.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
+Requires-Dist: hypothesis>=6.82.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: mypy>=1.5.0; extra == "dev"
+
+# 🚀 Kinetic Empire
+
+**Professional Cryptocurrency Futures Trading System for Binance**
+
+---
+
+## 🆕 Kinetic Empire v3.0 (Latest)
+
+The newest version with modular architecture, enhanced TA system, and comprehensive risk management.
+
+### Quick Start v3
+
+```bash
+# Demo mode (simulated data)
+python run_v3_demo.py
+
+# Live mode (Binance Demo account)
+python run_v3_live.py --capital 5000 --interval 60
+```
+
+### Key Features v3
+
+- 🧠 **Multi-Timeframe Analysis**: 4H/1H/15M trend alignment
+- 📊 **11+ Technical Indicators**: EMA, RSI, MACD, ATR, Volume, S/R
+- ⚡ **Dynamic Leverage**: 5x-20x based on confidence (60-100 score)
+- 🛡️ **Smart Risk Management**: Max positions, margin limits, emergency exits
+- 💰 **Scaled Exits**: TP1 (40% @ +1.5%), TP2 (30% @ +2.5%), trailing stop
+- 🔄 **Market Regime Detection**: Trending, Sideways, Choppy, High/Low Volatility
+
+### 📚 Documentation
+
+- **[Full Documentation](docs/KINETIC_EMPIRE_V3_DOCUMENTATION.md)** - Complete system guide
+- **[Quick Reference](docs/QUICK_REFERENCE.md)** - Cheat sheet for daily use
+- **[Binance Demo API Guide](docs/binance-demo-api-guide.md)** - API integration details
+
+---
+
+## 📋 System Overview
+
+| Version | Type | Target | Risk |
+|---------|------|--------|------|
+| **v3.0** | Modular TA System | 55-65% win rate | 1-2% per trade |
+| **Alpha v2.0** | Multi-Strategy | 50-80% annual | 1% per trade |
+
+### Supported Markets
+- **Exchange**: Binance Futures (Demo & Live)
+- **Type**: USD-M Perpetual Futures
+- **Pairs**: USDT and USDC markets
+
+---
+
+## 🎯 v3.0 Trading Strategy
+
+### Signal Scoring (100 points)
+
+| Component | Weight | Description |
+|-----------|--------|-------------|
+| 4H EMA Trend | 25 | Primary trend direction |
+| 1H Alignment | 20 | Trend confirmation |
+| RSI Zone | 15 | Momentum validation |
+| MACD Cross | 15 | Signal confirmation |
+| Volume Spike | 10 | Institutional interest |
+| Price Action | 15 | Entry timing |
+
+### Leverage Tiers
+
+| Confidence | Leverage | Risk % |
+|------------|----------|--------|
+| 60-69 | 5x | 1.0% |
+| 70-79 | 10x | 1.0% |
+| 80-89 | 15x | 1.5% |
+| 90-100 | 20x | 2.0% |
+
+---
+
+## 🛡️ Risk Management
+
+- **Max Positions**: 12 concurrent
+- **Max Margin**: 90% usage
+- **Daily Loss Limit**: 5% (pause trading)
+- **Stop Loss**: -3% max (ATR-based)
+- **Emergency Exit**: -4% position or -5% portfolio
+- **Correlation Limits**: Max 3 positions per asset group
+
+---
+
+## 🚀 Installation
+
+```bash
+# Clone repository
+git clone <repository-url>
+cd KineticEmpire
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies
+pip install -e .
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your Binance API keys
+```
+
+---
+
+## 📊 Running the Bot
+
+### v3.0 (Recommended)
+
+```bash
+# Demo mode - safe testing with mock data
+python run_v3_demo.py
+
+# Live mode - real Binance Demo account
+python run_v3_live.py --capital 5000 --interval 60
+```
+
+### Alpha v2.0 (Legacy)
+
+```bash
+# Live mode
+python run_alpha.py --live --capital 10000 --interval 60
+
+# Simulation mode
+python run_alpha.py --simulate --capital 10000
+```
+
+---
+
+## 📁 Project Structure
+
+```
+kinetic_empire/
+├── v3/                    # v3.0 Modular System
+│   ├── engine.py          # Main orchestrator
+│   ├── core/              # Config, models, data hub
+│   ├── scanner/           # Market opportunity finder
+│   ├── analyzer/          # Technical analysis
+│   │   └── enhanced/      # Advanced TA system
+│   └── manager/           # Position lifecycle
+├── alpha/                 # Alpha v2.0 strategies
+├── futures/               # Binance futures client
+├── risk/                  # Risk management
+└── indicators/            # Technical indicators
+
+docs/
+├── KINETIC_EMPIRE_V3_DOCUMENTATION.md  # Full v3 docs
+├── QUICK_REFERENCE.md                   # Quick reference
+└── binance-demo-api-guide.md           # API guide
+
+tests/
+├── test_v3_*.py           # v3 test suites
+└── test_alpha_*.py        # Alpha test suites
+```
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run all v3 tests
+python -m pytest tests/test_v3_*.py -v
+
+# Run with coverage
+python -m pytest tests/test_v3_*.py --cov=src/kinetic_empire/v3
+
+# Run specific test
+python -m pytest tests/test_v3_analyzer.py -v
+```
+
+---
+
+## ⚠️ Disclaimer
+
+**IMPORTANT**: This software is for educational purposes only. Cryptocurrency trading involves substantial risk of loss. Past performance does not guarantee future results.
+
+- Always start with demo/testnet accounts
+- Never risk more than you can afford to lose
+- Understand the strategy before using real funds
+- Monitor the bot regularly
+- Have emergency stop procedures in place
+
+The authors are not responsible for any financial losses incurred from using this software.
+
+---
+
+## 📜 License
+
+MIT License - See LICENSE file for details.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read the documentation and run tests before submitting PRs.
+
+```bash
+# Run tests before committing
+python -m pytest tests/ -v
+```
+
+---
+
+*Built with ❤️ for algorithmic traders*

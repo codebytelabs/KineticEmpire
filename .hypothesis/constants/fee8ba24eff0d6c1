@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/scanner/scanner.py
+# hypothesis_version: 6.148.5
+
+[0.0, 0.001, 0.005, 0.02, 0.5, 1800, '.*DOWN/.*', '.*UP/.*', 'BNB/.*', 'USDC/.*']

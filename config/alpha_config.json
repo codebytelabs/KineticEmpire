@@ -1,0 +1,70 @@
+{
+  "portfolio": {
+    "initial_allocations": {
+      "funding_arbitrage": 0.40,
+      "wave_rider": 0.30,
+      "smart_grid": 0.20,
+      "reserve": 0.10
+    },
+    "min_allocation": 0.10,
+    "max_allocation": 0.60,
+    "rebalance_threshold": 0.50,
+    "rebalance_amount": 0.05,
+    "rebalance_interval_hours": 24
+  },
+  "risk": {
+    "max_daily_var": 0.03,
+    "max_drawdown": 0.15,
+    "max_position_pct": 0.10,
+    "max_strategy_correlation": 0.7,
+    "daily_loss_limit": 0.05,
+    "cooldown_hours": 24
+  },
+  "arbitrage": {
+    "min_funding_rate": 0.0001,
+    "exit_funding_rate": 0.00005,
+    "max_positions": 5,
+    "position_size_pct": 0.08,
+    "delta_tolerance": 0.01
+  },
+  "wave_rider": {
+    "timeframes": ["1d", "4h", "1h", "15m"],
+    "ema_period": 21,
+    "min_aligned_timeframes": 3,
+    "entry_timeframe": "15m",
+    "roc_threshold": 0.5,
+    "pullback_buffer": 0.02
+  },
+  "smart_grid": {
+    "grid_count": 10,
+    "atr_spacing_multiplier": 0.5,
+    "trend_bias": 0.6,
+    "max_orders_per_pair": 10,
+    "profit_target_pct": 0.05,
+    "rebalance_threshold_atr": 2.0
+  },
+  "profit_take": {
+    "levels": [
+      {"r_level": 1.0, "percentage": 0.25},
+      {"r_level": 2.0, "percentage": 0.25},
+      {"r_level": 3.0, "percentage": 0.25}
+    ],
+    "move_stop_to_breakeven_at": 1.0,
+    "trail_remaining": true
+  },
+  "trailing": {
+    "method": "supertrend",
+    "atr_multiplier": 2.0,
+    "supertrend_period": 10,
+    "supertrend_multiplier": 3.0,
+    "chandelier_period": 22,
+    "chandelier_multiplier": 3.0,
+    "profit_lock_pct": 0.5
+  },
+  "pyramiding": {
+    "entry_r_level": 1.0,
+    "add_size_pct": 0.5,
+    "max_pyramids": 2,
+    "pyramid_stop_at_entry": true
+  }
+}

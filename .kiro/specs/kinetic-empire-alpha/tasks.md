@@ -1,0 +1,244 @@
+# Implementation Plan
+
+- [x] 1. Create core data models and R-Factor system
+  - [x] 1.1 Create new data models for Alpha v2.0
+    - Implement `ArbitragePosition`, `RFactorPosition`, `PartialExit` dataclasses
+    - Implement `Signal`, `GridLevel`, `GridState`, `FundingData` dataclasses
+    - Implement `TrendStrength` enum and `StrategyPerformance` dataclass
+    - _Requirements: 1.3, 2.1, 3.1, 7.1_
+  - [x] 1.2 Implement R-Factor Calculator
+    - Create `RFactorCalculator` class
+    - Implement `calculate_r_value(entry, stop, side)` for long/short positions
+    - Implement `calculate_current_r(position, current_price)` for profit tracking
+    - Implement `update_peak_r()` and `is_risk_free()` methods
+    - _Requirements: 2.1, 2.2, 2.3, 2.4_
+  - [x] 1.3 Write property tests for R-Factor calculations
+    - **Property 2: R-Factor Calculation Correctness**
+    - **Validates: Requirements 2.1, 2.2, 2.3**
+
+- [x] 2. Implement Partial Profit Taking System
+  - [x] 2.1 Create Partial Profit Taker module
+    - Implement `PartialProfitTaker` class with configurable R-levels
+    - Implement `check_profit_levels(position)` to detect when to take profit
+    - Implement `execute_partial_exit(position, exit)` for partial closes
+    - Implement `should_move_stop_to_breakeven(position)` logic
+    - Implement `get_remaining_position_pct(position)` calculation
+    - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.6_
+  - [x] 2.2 Write property tests for partial profit taking
+    - **Property 3: Partial Profit Taking Sequence**
+    - **Validates: Requirements 3.1, 3.2, 3.3, 3.4**
+
+- [x] 3. Implement Advanced Trailing Stop System
+  - [x] 3.1 Create Supertrend Indicator
+    - Implement `SupertrendIndicator` class
+    - Implement band calculation: Upper = HL2 + (multiplier × ATR)
+    - Implement band calculation: Lower = HL2 - (multiplier × ATR)
+    - Implement trend flip logic and band ratcheting
+    - Implement `get_stop()` and `get_trend()` methods
+    - _Requirements: 13.1, 13.2, 13.3, 13.4, 13.5_
+  - [x] 3.2 Write property tests for Supertrend
+    - **Property 11: Supertrend Band Ratcheting**
+    - **Validates: Requirements 13.5**
+  - [x] 3.3 Create Chandelier Exit Indicator
+    - Implement `ChandelierExit` class
+    - Implement long exit: Highest_High(N) - (multiplier × ATR)
+    - Implement short exit: Lowest_Low(N) + (multiplier × ATR)
+    - _Requirements: 14.1, 14.2, 14.3, 14.4_
+  - [x] 3.4 Write property tests for Chandelier Exit
+    - **Property 12: Chandelier Exit Calculation**
+    - **Validates: Requirements 14.1**
+  - [x] 3.5 Create Advanced Trailing System
+    - Implement `AdvancedTrailingSystem` class
+    - Implement `calculate_atr_stop()`, `calculate_supertrend_stop()`, `calculate_chandelier_stop()`
+    - Implement `calculate_profit_lock_stop()` for profit protection
+    - Implement `get_best_stop()` to select highest protective stop
+    - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6_
+  - [x] 3.6 Write property tests for trailing stop system
+    - **Property 4: Trailing Stop Monotonicity**
+    - **Property 5: Profit-Lock Constraint**
+    - **Validates: Requirements 4.4, 4.5**
+
+- [x] 4. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+
+- [x] 5. Implement Funding Rate Arbitrage Strategy
+  - [x] 5.1 Create Funding Rate Monitor
+    - Implement `FundingRateMonitor` class
+    - Implement `fetch_all_funding_rates()` from Binance API
+    - Implement `calculate_annualized_rate(rate_8h)` conversion
+    - Implement `get_opportunities()` and `get_top_opportunities(n)` methods
+    - Implement `calculate_7d_average(pair)` for historical analysis
+    - _Requirements: 10.1, 10.4, 10.5, 10.6_
+  - [x] 5.2 Write property tests for funding rate calculations
+    - **Property 13: Funding Rate Annualization**
+    - **Validates: Requirements 10.4**
+  - [x] 5.3 Create Funding Arbitrage Strategy
+    - Implement `FundingArbitrageStrategy` class
+    - Implement `find_opportunities(funding_rates)` to identify pairs above threshold
+    - Implement `open_arbitrage(pair)` to open delta-neutral position
+    - Implement `close_arbitrage(pair)` to close both legs simultaneously
+    - Implement `check_exit_conditions(pair, current_funding)` for exit logic
+    - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.6, 1.7_
+  - [x] 5.4 Write property tests for arbitrage
+    - **Property 1: Delta-Neutrality of Arbitrage Positions**
+    - **Validates: Requirements 1.4**
+
+- [x] 6. Implement Wave Rider Strategy
+  - [x] 6.1 Create Wave Rider Strategy
+    - Implement `WaveRiderStrategy` class
+    - Implement `analyze_timeframe(df)` for single timeframe trend analysis
+    - Implement `get_trend_alignment(timeframe_data)` for multi-TF analysis
+    - Implement `check_pullback_entry(df, trend)` for entry detection
+    - Implement `generate_signal(timeframe_data)` for signal generation
+    - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6_
+  - [x] 6.2 Write property tests for Wave Rider
+    - **Property 6: Multi-Timeframe Alignment**
+    - **Validates: Requirements 5.2, 5.3**
+
+- [x] 7. Implement Pyramiding Module
+  - [x] 7.1 Create Pyramiding Module
+    - Implement `PyramidingModule` class
+    - Implement `should_pyramid(position, trend)` to check pyramid conditions
+    - Implement `calculate_pyramid_size(original_size)` for sizing
+    - Implement `calculate_pyramid_stop(position)` for stop placement
+    - Implement `update_average_entry(position, pyramid_price, pyramid_size)`
+    - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6_
+  - [x] 7.2 Write property tests for pyramiding
+    - **Property 7: Pyramid Size Constraint**
+    - **Validates: Requirements 6.2, 6.5**
+
+- [x] 8. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 9. Implement Smart Grid Strategy
+  - [x] 9.1 Create Smart Grid Strategy
+    - Implement `SmartGridStrategy` class
+    - Implement `calculate_grid_spacing(atr)` using ATR multiplier
+    - Implement `calculate_grid_levels(center_price, spacing, trend)` with trend bias
+    - Implement `should_rebalance(grid, current_price, atr)` for rebalancing logic
+    - Implement `check_profit_target(grid)` for exit conditions
+    - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
+  - [x] 9.2 Write property tests for Smart Grid
+    - **Property 8: Grid Spacing Calculation**
+    - **Validates: Requirements 7.1**
+
+- [x] 10. Implement Portfolio Manager
+  - [x] 10.1 Create Portfolio Manager
+    - Implement `PortfolioManager` class with initial allocations
+    - Implement `get_strategy_capital(strategy_name)` for allocation lookup
+    - Implement `calculate_strategy_sharpe(strategy_name, lookback_days)` for performance
+    - Implement `should_rebalance()` to check rebalancing conditions
+    - Implement `rebalance_allocations()` to adjust based on performance
+    - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6_
+  - [x] 10.2 Write property tests for Portfolio Manager
+    - **Property 9: Portfolio Allocation Bounds**
+    - **Validates: Requirements 8.5**
+
+- [x] 11. Implement Unified Risk Manager
+  - [x] 11.1 Create Unified Risk Manager
+    - Implement `UnifiedRiskManager` class
+    - Implement `calculate_var(positions, confidence)` for VaR calculation
+    - Implement `calculate_drawdown(current_equity)` for drawdown tracking
+    - Implement `check_position_size()`, `check_var_limit()`, `check_drawdown_limit()`
+    - Implement `check_daily_loss()` and `can_trade()` methods
+    - Implement `validate_trade(trade, portfolio)` for trade validation
+    - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6_
+  - [x] 11.2 Write property tests for Risk Manager
+    - **Property 10: Risk Limit Enforcement**
+    - **Property 14: Emergency Mode Trigger**
+    - **Validates: Requirements 9.2, 9.3, 9.6**
+
+- [x] 12. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+
+- [x] 13. Implement Performance Analytics
+  - [x] 13.1 Create Performance Analytics Module
+    - Implement `PerformanceAnalytics` class
+    - Implement trade recording with strategy, pair, R-multiple, hold time
+    - Implement `calculate_metrics(strategy)` for win rate, avg R, Sharpe, max DD
+    - Implement `get_daily_weekly_monthly_pnl(strategy)` for reporting
+    - Implement `calculate_strategy_correlations()` for correlation analysis
+    - Implement `export_to_csv()` for external analysis
+    - _Requirements: 11.1, 11.2, 11.3, 11.4, 11.5, 11.6_
+  - [x] 13.2 Write unit tests for analytics calculations
+    - Test Sharpe ratio calculation
+    - Test win rate calculation
+    - Test max drawdown calculation
+    - _Requirements: 11.2_
+
+- [x] 14. Implement Strategy Execution Engine
+  - [x] 14.1 Create Execution Engine
+    - Implement `ExecutionEngine` class
+    - Implement signal queuing and prioritization by allocation weight
+    - Implement rate limiting (200ms between requests)
+    - Implement retry logic with exponential backoff (3 retries)
+    - Implement position conflict detection (no opposing positions in same pair)
+    - Implement emergency stop functionality
+    - Implement reduce-only orders for partial exits
+    - _Requirements: 12.1, 12.2, 12.3, 12.4, 12.5, 12.6_
+  - [x] 14.2 Write unit tests for execution engine
+    - Test signal prioritization
+    - Test rate limiting
+    - Test conflict detection
+    - _Requirements: 12.1, 12.2, 12.4_
+
+- [x] 15. Integrate all strategies into unified system
+  - [x] 15.1 Create main Alpha strategy orchestrator
+    - Create `KineticEmpireAlpha` class that coordinates all strategies
+    - Integrate `FundingArbitrageStrategy` with 40% allocation
+    - Integrate `WaveRiderStrategy` with 30% allocation
+    - Integrate `SmartGridStrategy` with 20% allocation
+    - Wire up `PortfolioManager` for dynamic allocation
+    - Wire up `UnifiedRiskManager` for risk controls
+    - _Requirements: 8.1, 9.1_
+  - [x] 15.2 Implement main run loop
+    - Create async main loop that cycles through strategies
+    - Implement funding rate monitoring and arbitrage execution
+    - Implement wave rider signal generation and execution
+    - Implement smart grid management
+    - Implement R-factor tracking and partial profit taking
+    - _Requirements: 1.5, 3.4, 5.4, 7.6_
+
+- [x] 16. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 17. Create runner scripts and configuration
+  - [x] 17.1 Create Alpha configuration
+    - Create `config/alpha_config.json` with all strategy parameters
+    - Configure funding arbitrage thresholds (10% entry, 5% exit)
+    - Configure R-factor levels (1R, 2R, 3R with 25% each)
+    - Configure trailing stop parameters (ATR, Supertrend, Chandelier)
+    - Configure portfolio allocations and risk limits
+    - _Requirements: 8.1, 9.1_
+  - [x] 17.2 Create runner script
+    - Create `run_alpha.py` main entry point
+    - Implement command-line arguments for mode selection
+    - Implement dry-run mode for testing
+    - Implement logging configuration
+    - _Requirements: 12.5_
+
+- [x] 18. Integration testing
+  - [x] 18.1 Test funding arbitrage flow
+    - Test funding rate monitoring on testnet
+    - Test arbitrage position opening (spot + futures)
+    - Test funding collection tracking
+    - Test arbitrage exit conditions
+    - _Requirements: 1.1, 1.2, 1.3, 1.6_
+  - [x] 18.2 Test R-factor and partial profit flow
+    - Test R calculation on real positions
+    - Test partial exit execution at 1R, 2R, 3R
+    - Test stop movement to breakeven
+    - Test trailing stop activation
+    - _Requirements: 2.1, 3.1, 3.2, 3.3, 4.5_
+  - [x] 18.3 Test multi-strategy coordination
+    - Test all three strategies running simultaneously
+    - Test portfolio allocation enforcement
+    - Test risk limit enforcement
+    - Test emergency stop functionality
+    - _Requirements: 8.1, 9.2, 9.3, 12.5_
+
+- [x] 19. Final Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+

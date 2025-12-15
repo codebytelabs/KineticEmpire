@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/strategy/entry.py
+# hypothesis_version: 6.148.5
+
+[1.5, 45.0, 65.0, 'all_conditions_met', 'macro_trend', 'max_trades', 'micro_trend', 'momentum', 'open_trades', 'pullback', 'regime', 'trade_limit', 'volume']

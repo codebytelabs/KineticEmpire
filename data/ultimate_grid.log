@@ -1,0 +1,139 @@
+2025-12-03 19:35:30,085 - INFO - 🏆 KINETIC EMPIRE ULTIMATE GRID BOT
+2025-12-03 19:35:30,085 - INFO -    Target: 80%+ Win Rate, <10% Drawdown
+2025-12-03 19:35:30,085 - INFO - ======================================================================
+2025-12-03 19:35:30,217 - INFO - ✅ Connected to Binance Futures Testnet
+2025-12-03 19:35:30,217 - INFO -    Available Balance: $3526.32
+2025-12-03 19:35:30,217 - INFO - 
+======================================================================
+2025-12-03 19:35:30,217 - INFO - 🚀 ULTIMATE GRID BOT STARTING
+2025-12-03 19:35:30,217 - INFO - ======================================================================
+2025-12-03 19:35:30,217 - INFO - 🚀 Initializing Ultimate Grid Bot...
+2025-12-03 19:35:30,336 - INFO -    Starting Balance: $3526.32
+2025-12-03 19:35:30,336 - INFO - 
+📊 Scanning and ranking pairs...
+2025-12-03 19:35:30,336 - INFO - Scanning 20 pairs...
+2025-12-03 19:35:34,987 - INFO - Found 19 tradeable pairs
+
+====================================================================================================
+🏆 PAIR RANKINGS FOR GRID TRADING
+====================================================================================================
+Rank  Symbol       Grade  Score    Range    Vol      Volat    Trend    Alloc    Type      
+----------------------------------------------------------------------------------------------------
+1     ADAUSDT      B-     65.6     37.9     100.0    100.0    53.5     3.0     % NEUTRAL   
+2     XRPUSDT      C+     64.4     42.0     90.0     100.0    52.4     2.0     % NEUTRAL   
+3     DOGEUSDT     C+     63.8     28.4     100.0    100.0    56.4     2.0     % NEUTRAL   
+4     ARBUSDT      C+     60.2     29.2     80.0     100.0    57.7     2.0     % NEUTRAL   
+5     SOLUSDT      C      57.6     37.6     60.0     100.0    54.1     2.0     % NEUTRAL   
+6     DOTUSDT      C      57.0     26.2     70.0     100.0    55.1     2.0     % NEUTRAL   
+7     OPUSDT       C      56.6     29.0     80.0     100.0    40.0     2.0     % NEUTRAL   
+8     FILUSDT      C      55.9     29.2     70.0     100.0    37.0     2.0     % SHORT     
+9     NEARUSDT     C      55.9     42.0     70.0     100.0    30.0     2.0     % NEUTRAL   
+10    ATOMUSDT     C      55.5     42.0     60.0     100.0    35.0     2.0     % SHORT     
+====================================================================================================
+2025-12-03 19:35:35,222 - INFO - 
+🔧 Setting up grid for ADAUSDT
+2025-12-03 19:35:35,222 - INFO -    Grade: B- (Score: 65.6)
+2025-12-03 19:35:35,222 - INFO -    Range: $0.40 - $0.45
+2025-12-03 19:35:35,222 - INFO -    Investment: $63.47 @ 2x
+2025-12-03 19:35:35,222 - INFO -    Grid Type: NEUTRAL
+2025-12-03 19:35:35,223 - INFO - Setting up grid for ADAUSDT
+2025-12-03 19:35:35,223 - INFO -   Range: $0.4013 - $0.4527
+2025-12-03 19:35:35,223 - INFO -   Grids: 15, Leverage: 2x
+2025-12-03 19:35:35,336 - INFO -   Leverage set to 2x
+2025-12-03 19:35:35,447 - INFO -   Current price: $0.4363
+2025-12-03 19:35:35,447 - INFO -   Quantity per grid: 19.398
+2025-12-03 19:35:37,617 - INFO - Placed 16 grid orders for ADAUSDT
+2025-12-03 19:35:37,617 - INFO -    ✅ Placed 16 orders
+2025-12-03 19:35:37,778 - INFO - 
+🔧 Setting up grid for XRPUSDT
+2025-12-03 19:35:37,778 - INFO -    Grade: C+ (Score: 64.4)
+2025-12-03 19:35:37,778 - INFO -    Range: $2.00 - $2.24
+2025-12-03 19:35:37,778 - INFO -    Investment: $61.05 @ 2x
+2025-12-03 19:35:37,778 - INFO -    Grid Type: NEUTRAL
+2025-12-03 19:35:37,778 - INFO - Setting up grid for XRPUSDT
+2025-12-03 19:35:37,778 - INFO -   Range: $2.0 - $2.24
+2025-12-03 19:35:37,778 - INFO -   Grids: 15, Leverage: 2x
+2025-12-03 19:35:37,900 - INFO -   Leverage set to 2x
+2025-12-03 19:35:38,006 - INFO -   Current price: $2.1717
+2025-12-03 19:35:38,007 - INFO -   Quantity per grid: 3.748
+2025-12-03 19:35:40,208 - INFO - Placed 16 grid orders for XRPUSDT
+2025-12-03 19:35:40,208 - INFO -    ✅ Placed 16 orders
+2025-12-03 19:35:45,958 - INFO - 
+🔧 Setting up grid for DOGEUSDT
+2025-12-03 19:35:45,958 - INFO -    Grade: C+ (Score: 63.8)
+2025-12-03 19:35:45,958 - INFO -    Range: $0.14 - $0.15
+2025-12-03 19:35:45,958 - INFO -    Investment: $50.00 @ 2x
+2025-12-03 19:35:45,958 - INFO -    Grid Type: NEUTRAL
+2025-12-03 19:35:45,958 - INFO - Setting up grid for DOGEUSDT
+2025-12-03 19:35:45,958 - INFO -   Range: $0.138 - $0.1536
+2025-12-03 19:35:45,958 - INFO -   Grids: 15, Leverage: 2x
+2025-12-03 19:35:46,088 - INFO -   Leverage set to 2x
+2025-12-03 19:35:46,197 - INFO -   Current price: $0.14999
+2025-12-03 19:35:46,197 - INFO -   Quantity per grid: 44.447
+2025-12-03 19:35:47,224 - INFO - Placed 7 grid orders for DOGEUSDT
+2025-12-03 19:35:47,224 - INFO -    ✅ Placed 7 orders
+2025-12-03 19:35:47,354 - INFO - 
+🔧 Setting up grid for ARBUSDT
+2025-12-03 19:35:47,354 - INFO -    Grade: C+ (Score: 60.2)
+2025-12-03 19:35:47,354 - INFO -    Range: $0.20 - $0.22
+2025-12-03 19:35:47,354 - INFO -    Investment: $50.00 @ 2x
+2025-12-03 19:35:47,354 - INFO -    Grid Type: NEUTRAL
+2025-12-03 19:35:47,354 - INFO - Setting up grid for ARBUSDT
+2025-12-03 19:35:47,354 - INFO -   Range: $0.1987 - $0.2235
+2025-12-03 19:35:47,354 - INFO -   Grids: 15, Leverage: 2x
+2025-12-03 19:35:47,478 - INFO -   Leverage set to 2x
+2025-12-03 19:35:47,590 - INFO -   Current price: $0.216
+2025-12-03 19:35:47,590 - INFO -   Quantity per grid: 30.864
+2025-12-03 19:35:49,627 - INFO - Placed 16 grid orders for ARBUSDT
+2025-12-03 19:35:49,628 - INFO -    ✅ Placed 16 orders
+2025-12-03 19:35:55,713 - ERROR - 🚨 DAILY LOSS LIMIT BREACHED: -3.8%
+2025-12-03 19:35:55,714 - ERROR - Risk limits breached - shutting down
+2025-12-03 19:35:55,714 - INFO - 
+🛑 Shutting down...
+2025-12-03 19:35:55,714 - INFO - Closing grid for ADAUSDT: Bot shutdown
+2025-12-03 19:35:55,833 - INFO - Cancelled all open orders
+2025-12-03 19:35:55,968 - INFO - Grid Summary for ADAUSDT:
+2025-12-03 19:35:55,968 - INFO -   Total Profit: $0.00
+2025-12-03 19:35:55,968 - INFO -   Completed Trades: 0
+2025-12-03 19:35:55,968 - INFO - Closing grid for XRPUSDT: Bot shutdown
+2025-12-03 19:35:56,089 - INFO - Cancelled all open orders
+2025-12-03 19:35:56,224 - INFO - Grid Summary for XRPUSDT:
+2025-12-03 19:35:56,224 - INFO -   Total Profit: $0.00
+2025-12-03 19:35:56,224 - INFO -   Completed Trades: 0
+2025-12-03 19:35:56,224 - INFO - Closing grid for DOGEUSDT: Bot shutdown
+2025-12-03 19:35:56,337 - INFO - Cancelled all open orders
+2025-12-03 19:35:56,485 - INFO - Grid Summary for DOGEUSDT:
+2025-12-03 19:35:56,485 - INFO -   Total Profit: $0.00
+2025-12-03 19:35:56,486 - INFO -   Completed Trades: 0
+2025-12-03 19:35:56,486 - INFO - Closing grid for ARBUSDT: Bot shutdown
+2025-12-03 19:35:56,602 - INFO - Cancelled all open orders
+2025-12-03 19:35:56,727 - INFO - Grid Summary for ARBUSDT:
+2025-12-03 19:35:56,727 - INFO -   Total Profit: $0.00
+2025-12-03 19:35:56,727 - INFO -   Completed Trades: 0
+2025-12-03 19:35:56,862 - INFO - 
+======================================================================
+2025-12-03 19:35:56,862 - INFO - 📊 FINAL SUMMARY
+2025-12-03 19:35:56,862 - INFO - ======================================================================
+2025-12-03 19:35:56,862 - INFO -    Starting Balance: $3526.32
+2025-12-03 19:35:56,862 - INFO -    Final Balance: $3526.32
+2025-12-03 19:35:56,862 - INFO -    Total P&L: $0.00 (0.00%)
+2025-12-03 19:35:56,862 - INFO -    Total Trades: 0
+2025-12-03 19:35:56,862 - INFO -    Max Drawdown: 0.00%
+2025-12-03 19:35:56,862 - INFO - ======================================================================
+
+============================================================
+📊 PERFORMANCE SUMMARY
+============================================================
+Total Trades:      0
+Win Rate:          0.0%
+Total P&L:         $0.00 (0.00%)
+Profit Factor:     0.00
+Sharpe Ratio:      0.00
+Max Drawdown:      $0.00 (0.00%)
+Avg Win:           $0.00
+Avg Loss:          $0.00
+Best Trade:        $0.00
+Worst Trade:       $0.00
+Consecutive Wins:  0
+Consecutive Losses:0
+============================================================

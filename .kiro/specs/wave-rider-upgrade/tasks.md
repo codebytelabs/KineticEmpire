@@ -1,0 +1,233 @@
+# Implementation Plan
+
+- [ ] 1. Create Wave Rider Module Structure and Data Models
+  - [ ] 1.1 Create wave_rider module directory and __init__.py
+    - Create `src/kinetic_empire/wave_rider/` directory
+    - Create `__init__.py` with exports
+    - _Requirements: All_
+  - [ ] 1.2 Create data models and enums
+    - Create `models.py` with MoverData, TimeframeAnalysis, MTFResult, WaveRiderSignal, TrailingState, WaveRiderConfig
+    - Create SpikeClassification and TrendDirection enums
+    - _Requirements: 1.1-1.6, 2.1-2.4, 3.1-3.9_
+  - [ ] 1.3 Write unit tests for data models
+    - Test dataclass creation and validation
+    - Test enum values
+    - _Requirements: 1.1-1.6_
+
+- [ ] 2. Implement Volume Spike Detector
+  - [ ] 2.1 Create VolumeSpikeDetector class
+    - Implement detect_spike() method with threshold checks
+    - Implement get_spike_strength() for scoring
+    - Return (has_spike, classification) tuple
+    - _Requirements: 2.1, 2.2, 2.3, 2.4_
+  - [ ] 2.2 Write property test for spike classification
+    - **Property 3: Volume Spike Classification**
+    - **Validates: Requirements 2.2, 2.3, 2.4**
+
+- [ ] 3. Implement Momentum Scanner
+  - [ ] 3.1 Create MomentumScanner class
+    - Implement scan_all_futures() to fetch all USDT futures tickers
+    - Implement calculate_volume_ratio() with 20-period average
+    - Implement calculate_momentum_score() as volume_ratio * abs(price_change)
+    - _Requirements: 1.1, 1.2, 1.3, 1.4_
+  - [ ] 3.2 Implement get_top_movers() method
+    - Sort by momentum_score descending
+    - Filter by minimum 24h volume (10M USD)
+    - Return top N (default 20)
+    - _Requirements: 1.5, 1.6_
+  - [ ] 3.3 Write property test for momentum score calculation
+    - **Property 1: Momentum Score Calculation**
+    - **Validates: Requirements 1.4**
+  - [ ] 3.4 Write property test for top movers sorting
+    - **Property 2: Top Movers Sorting**
+    - **Validates: Requirements 1.5**
+
+- [ ] 4. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 5. Implement MTF Analyzer
+  - [ ] 5.1 Create MTFAnalyzer class with indicator calculations
+    - Implement EMA calculation (9 and 21 period)
+    - Implement RSI calculation (14 period)
+    - Implement VWAP calculation
+    - _Requirements: 3.2, 3.3_
+  - [ ] 5.2 Implement trend direction classification
+    - BULLISH: EMA_fast > EMA_slow AND price > EMA_fast
+    - BEARISH: EMA_fast < EMA_slow AND price < EMA_slow
+    - NEUTRAL: otherwise
+    - _Requirements: 3.4, 3.5, 3.6_
+  - [ ] 5.3 Implement alignment score calculation
+    - 100 points if all 3 timeframes agree
+    - 70 points if 2 of 3 agree
+    - 40 points if only 1 shows direction
+    - _Requirements: 3.7, 3.8, 3.9_
+  - [ ] 5.4 Implement analyze() method
+    - Fetch OHLCV for 1m, 5m, 15m
+    - Calculate indicators for each timeframe
+    - Return MTFResult with all analyses
+    - _Requirements: 3.1_
+  - [ ] 5.5 Write property test for trend direction classification
+    - **Property 4: Trend Direction Classification**
+    - **Validates: Requirements 3.4, 3.5, 3.6**
+  - [ ] 5.6 Write property test for alignment score calculation
+    - **Property 5: Alignment Score Calculation**
+    - **Validates: Requirements 3.7, 3.8, 3.9**
+
+- [ ] 6. Implement Wave Rider Position Sizer
+  - [ ] 6.1 Create WaveRiderPositionSizer class
+    - Implement tier-based sizing:
+      - Tier 1 (2.0-3.0): 5% size, 3x leverage
+      - Tier 2 (3.0-5.0): 7% size, 5x leverage
+      - Tier 3 (5.0+): 10% size, 7x leverage
+    - Add alignment bonus (+1x leverage if score=100)
+    - Add loss protection (50% reduction after 2 losses)
+    - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
+  - [ ] 6.2 Implement exposure cap enforcement
+    - Reduce size to fit within 45% max exposure
+    - _Requirements: 5.6_
+  - [ ] 6.3 Write property test for position size tiers
+    - **Property 8: Position Size and Leverage Tiers**
+    - **Validates: Requirements 5.1, 5.2, 5.3**
+  - [ ] 6.4 Write property test for alignment leverage bonus
+    - **Property 9: Alignment Leverage Bonus**
+    - **Validates: Requirements 5.4**
+  - [ ] 6.5 Write property test for loss protection
+    - **Property 10: Loss Protection Size Reduction**
+    - **Validates: Requirements 5.5**
+
+- [ ] 7. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 8. Implement Wave Rider Signal Generator
+  - [ ] 8.1 Create WaveRiderSignalGenerator class
+    - Implement entry condition checks:
+      - volume_ratio >= 2.0
+      - alignment_score >= 70
+      - RSI between 25-75
+      - Not blacklisted
+      - Exposure < 45%
+    - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
+  - [ ] 8.2 Implement signal direction determination
+    - LONG: price > VWAP AND majority BULLISH
+    - SHORT: price < VWAP AND majority BEARISH
+    - _Requirements: 4.6, 4.7_
+  - [ ] 8.3 Implement evaluate() method
+    - Combine all checks and return WaveRiderSignal or None
+    - _Requirements: 4.8_
+  - [ ] 8.4 Write property test for entry rejection conditions
+    - **Property 6: Entry Rejection Conditions**
+    - **Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5**
+  - [ ] 8.5 Write property test for signal direction
+    - **Property 7: Signal Direction Determination**
+    - **Validates: Requirements 4.6, 4.7**
+
+- [ ] 9. Implement Wave Rider Stop Calculator
+  - [ ] 9.1 Create WaveRiderStopCalculator class
+    - Calculate stop at 1.5x ATR from entry
+    - Enforce minimum 0.5% stop distance
+    - Enforce maximum 3% stop distance
+    - _Requirements: 6.1, 6.2, 6.3_
+  - [ ] 9.2 Implement direction-aware stop placement
+    - LONG: stop below entry
+    - SHORT: stop above entry
+    - _Requirements: 6.4, 6.5_
+  - [ ] 9.3 Write property test for stop loss bounds
+    - **Property 11: Stop Loss Bounds**
+    - **Validates: Requirements 6.2, 6.3**
+  - [ ] 9.4 Write property test for stop loss direction
+    - **Property 12: Stop Loss Direction**
+    - **Validates: Requirements 6.4, 6.5**
+
+- [ ] 10. Implement Wave Rider Trailing Stop
+  - [ ] 10.1 Create WaveRiderTrailingStop class
+    - Activate at 1.0% profit
+    - Trail at 0.8x ATR initially
+    - Tighten to 0.5x ATR at 3% profit
+    - _Requirements: 7.1, 7.2, 7.5_
+  - [ ] 10.2 Implement profit locking (TP1/TP2)
+    - TP1: Close 30% at 1.5% profit
+    - TP2: Close 30% at 2.5% profit
+    - _Requirements: 7.3, 7.4_
+  - [ ] 10.3 Write property test for trailing stop activation
+    - **Property 13: Trailing Stop Activation**
+    - **Validates: Requirements 7.1**
+  - [ ] 10.4 Write property test for trailing stop tightening
+    - **Property 14: Trailing Stop Tightening**
+    - **Validates: Requirements 7.2, 7.5**
+
+- [ ] 11. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 12. Implement Risk Management Components
+  - [ ] 12.1 Create WaveRiderCircuitBreaker class
+    - Halt trading when daily loss > 3%
+    - Track starting balance and realized PnL
+    - _Requirements: 9.1_
+  - [ ] 12.2 Create WaveRiderBlacklist class
+    - Blacklist symbol after 2 consecutive losses
+    - 30-minute blacklist duration
+    - _Requirements: 9.2_
+  - [ ] 12.3 Implement position limit enforcement
+    - Max 5 open positions
+    - _Requirements: 9.3_
+  - [ ] 12.4 Write property test for circuit breaker
+    - **Property 15: Circuit Breaker Activation**
+    - **Validates: Requirements 9.1**
+  - [ ] 12.5 Write property test for blacklist behavior
+    - **Property 16: Blacklist After Losses**
+    - **Validates: Requirements 9.2**
+  - [ ] 12.6 Write property test for position limit
+    - **Property 17: Position Limit Enforcement**
+    - **Validates: Requirements 9.3**
+
+- [ ] 13. Implement Wave Rider Engine
+  - [ ] 13.1 Create WaveRiderEngine class
+    - Initialize all components
+    - Set up scan interval (15s) and monitor interval (5s)
+    - _Requirements: 8.1, 8.2_
+  - [ ] 13.2 Implement scan_cycle() method
+    - Call MomentumScanner.get_top_movers()
+    - For each mover, run MTFAnalyzer
+    - Generate signals with SignalGenerator
+    - Execute valid signals
+    - _Requirements: 1.1-1.6, 3.1, 4.1-4.8_
+  - [ ] 13.3 Implement monitor_positions() method
+    - Check exit conditions every 5 seconds
+    - Update trailing stops
+    - Execute TP1/TP2 partial closes
+    - _Requirements: 7.1-7.6, 8.2_
+  - [ ] 13.4 Implement execute_signal() method
+    - Calculate position size and leverage
+    - Place market order with stop loss
+    - Track in exposure tracker
+    - _Requirements: 5.1-5.6, 6.1-6.6_
+  - [ ] 13.5 Implement start() async method
+    - Main trading loop
+    - Handle keyboard interrupt
+    - Log status updates
+    - _Requirements: 8.1-8.4, 10.1-10.5_
+
+- [ ] 14. Create run_wave_rider.py Entry Point
+  - [ ] 14.1 Create run_wave_rider.py script
+    - Parse command line arguments (--capital)
+    - Initialize BinanceFuturesClient
+    - Initialize WaveRiderEngine
+    - Start async event loop
+    - _Requirements: All_
+  - [ ] 14.2 Add startup logging
+    - Log configuration settings
+    - Log account balance
+    - Log existing positions
+    - _Requirements: 10.1-10.5_
+
+- [ ] 15. Final Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 16. Integration Testing and Documentation
+  - [ ] 16.1 Test full pipeline with mock exchange
+    - Test scan → analyze → signal → execute flow
+    - Test position monitoring and exit flow
+    - _Requirements: All_
+  - [ ] 16.2 Update start_backend.sh
+    - Add option to run wave_rider mode
+    - _Requirements: All_

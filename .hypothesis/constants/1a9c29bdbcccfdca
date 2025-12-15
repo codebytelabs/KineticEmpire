@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/exchange/client.py
+# hypothesis_version: 6.148.5
+
+[0.0, 200, 1000, 'buy', 'cancelled', 'emergency_exit', 'filled', 'limit', 'market', 'open', 'pending', 'sell', 'stoploss']

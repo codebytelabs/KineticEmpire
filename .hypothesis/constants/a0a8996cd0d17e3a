@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/strategy/exit.py
+# hypothesis_version: 6.148.5
+
+['ExitSignal', 'none', 'stop_loss', 'trend_break']

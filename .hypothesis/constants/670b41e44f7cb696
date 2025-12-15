@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/alpha/funding_arbitrage.py
+# hypothesis_version: 6.148.5
+
+[0.0, 5e-05, 0.0001, 0.01, 0.08, 365]

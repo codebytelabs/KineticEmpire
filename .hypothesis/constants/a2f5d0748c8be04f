@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/alpha/indicators.py
+# hypothesis_version: 6.148.5
+
+[3.0, 'BEARISH', 'BULLISH', 'LONG', 'atr', 'chandelier_long', 'chandelier_short', 'close', 'high', 'low', 'supertrend', 'supertrend_direction', 'supertrend_lower', 'supertrend_upper']

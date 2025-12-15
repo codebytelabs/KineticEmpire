@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/risk/regime.py
+# hypothesis_version: 6.148.5
+
+['BTC/USDT', 'btc_close', 'btc_ema50', 'max_trades', 'price_above_ema', 'regime']

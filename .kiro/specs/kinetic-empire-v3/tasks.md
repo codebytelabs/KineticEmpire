@@ -1,0 +1,205 @@
+# Implementation Plan
+
+- [x] 1. Set up project structure and core models
+  - [x] 1.1 Create directory structure for v3 modules
+    - Create `src/kinetic_empire/v3/` with subdirectories: `core/`, `scanner/`, `analyzer/`, `manager/`
+    - Create `__init__.py` files for each module
+    - _Requirements: 9.5_
+  - [x] 1.2 Implement core data models
+    - Create `Signal`, `Position`, `Ticker`, `OHLCV`, `Indicators` dataclasses in `core/models.py`
+    - Include all fields from design document
+    - _Requirements: 2.11, 3.1-3.5_
+  - [x] 1.3 Write property test for Signal model
+    - **Property 6: Stop Loss Bounds**
+    - **Validates: Requirements 3.3**
+  - [x] 1.4 Implement configuration management
+    - Create `core/config.py` with all configurable parameters
+    - Include leverage tiers, risk percentages, timeframes, thresholds
+    - _Requirements: 4.1-4.6, 5.1-5.5_
+
+- [x] 2. Implement Technical Indicators module
+  - [x] 2.1 Implement EMA calculation
+    - Create `analyzer/indicators.py` with `calc_ema(data, period)` function
+    - Use standard EMA formula with proper initialization
+    - _Requirements: 2.2_
+  - [x] 2.2 Write property test for EMA calculation
+    - **Property 3: EMA Calculation Correctness**
+    - **Validates: Requirements 2.2**
+  - [x] 2.3 Implement RSI calculation
+    - Add `calc_rsi(closes, period)` function
+    - Handle edge cases (all gains, all losses)
+    - _Requirements: 2.2_
+  - [x] 2.4 Write property test for RSI calculation
+    - **Property 4: RSI Calculation Correctness**
+    - **Validates: Requirements 2.2**
+  - [x] 2.5 Implement MACD calculation
+    - Add `calc_macd(closes, fast, slow, signal)` function
+    - Return MACD line, signal line, and histogram
+    - _Requirements: 2.2_
+  - [x] 2.6 Implement ATR calculation
+    - Add `calc_atr(highs, lows, closes, period)` function
+    - Use true range formula
+    - _Requirements: 2.2, 3.1-3.2_
+
+- [x] 3. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 4. Implement Market Scanner module
+  - [x] 4.1 Create MarketScanner class
+    - Create `scanner/market_scanner.py` with async `scan()` method
+    - Fetch all tickers from exchange
+    - _Requirements: 1.1_
+  - [x] 4.2 Implement volume filter
+    - Add `filter_by_volume(tickers)` method
+    - Filter tickers with volume > 1.5x 20-period average
+    - _Requirements: 1.2_
+  - [x] 4.3 Write property test for volume filter
+    - **Property 1: Volume Filter Correctness**
+    - **Validates: Requirements 1.2**
+  - [x] 4.4 Implement momentum filter
+    - Add `filter_by_momentum(tickers)` method
+    - Filter tickers with |24h change| > 1%
+    - _Requirements: 1.3_
+  - [x] 4.5 Write property test for momentum filter
+    - **Property 2: Momentum Filter Correctness**
+    - **Validates: Requirements 1.3**
+  - [x] 4.6 Implement opportunity ranking
+    - Add `rank_opportunities(tickers)` method
+    - Sort by volume × momentum score
+    - _Requirements: 1.4, 1.5_
+
+- [x] 5. Implement TA Analyzer module
+  - [x] 5.1 Create TAAnalyzer class
+    - Create `analyzer/ta_analyzer.py` with async `analyze(symbol)` method
+    - Fetch OHLCV for 4H, 1H, 15M timeframes
+    - _Requirements: 2.1_
+  - [x] 5.2 Implement multi-timeframe indicator calculation
+    - Add `calculate_indicators(ohlcv)` method
+    - Calculate EMA, RSI, MACD, ATR for each timeframe
+    - _Requirements: 2.2_
+  - [x] 5.3 Implement scoring system
+    - Add `score_opportunity(ind_4h, ind_1h, ind_15m)` method
+    - Implement all scoring rules from design (EMA trend, RSI zone, MACD cross, volume)
+    - _Requirements: 2.3-2.10_
+  - [x] 5.4 Write property test for scoring system
+    - **Property 5: Scoring Consistency**
+    - **Validates: Requirements 2.3-2.10**
+  - [x] 5.5 Implement entry/exit calculation
+    - Add `calculate_entry_exit(indicators, direction)` method
+    - Calculate stop loss as 2×ATR capped at 3%
+    - Calculate take profit at 1.5× risk distance
+    - _Requirements: 3.1-3.5_
+  - [x] 5.6 Implement Signal generation
+    - Combine all analysis into Signal dataclass
+    - Include all required fields
+    - _Requirements: 2.11_
+
+- [x] 6. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 7. Implement Position Manager - Risk Checks
+  - [x] 7.1 Create PositionManager class
+    - Create `manager/position_manager.py` with core structure
+    - Initialize with DataHub reference
+    - _Requirements: 7.1-7.5_
+  - [x] 7.2 Implement pre-trade risk checks
+    - Add `check_risk_limits()` method
+    - Check: max positions (12), margin usage (<90%), daily loss (<5%), correlation (<3)
+    - _Requirements: 7.1-7.5_
+  - [x] 7.3 Write property test for risk checks
+    - **Property 10: Risk Check Completeness**
+    - **Validates: Requirements 7.1-7.5**
+  - [x] 7.4 Implement dynamic leverage calculation
+    - Add `calculate_leverage(confidence, volatility)` method
+    - Map confidence to leverage tier, reduce by 50% in high volatility
+    - _Requirements: 4.1-4.6_
+  - [x] 7.5 Write property test for leverage mapping
+    - **Property 7: Leverage Mapping Correctness**
+    - **Validates: Requirements 4.1-4.5**
+  - [x] 7.6 Implement dynamic position sizing
+    - Add `calculate_position_size(equity, risk_pct, entry, stop)` method
+    - Scale risk by confidence, cap at 25% equity
+    - _Requirements: 5.1-5.5_
+  - [x] 7.7 Write property test for position sizing
+    - **Property 8: Position Size Bounds**
+    - **Validates: Requirements 5.5**
+
+- [x] 8. Implement Position Manager - Execution
+  - [x] 8.1 Implement signal processing
+    - Add `process_signal(signal)` method
+    - Run risk checks, calculate leverage/size, execute order
+    - _Requirements: 4.1-4.6, 5.1-5.5_
+  - [x] 8.2 Implement order execution
+    - Add `execute_order(symbol, side, size, leverage)` method
+    - Place market order on Binance Futures
+    - _Requirements: 9.3_
+  - [x] 8.3 Implement position monitoring loop
+    - Add `monitor_positions()` async method
+    - Check all positions every 5 seconds
+    - _Requirements: 9.1_
+
+- [x] 9. Implement Position Manager - Exit Management
+  - [x] 9.1 Implement trailing stop logic
+    - Add `update_trailing_stops()` method
+    - Activate at +1.5%, tighten at +3%
+    - _Requirements: 6.3-6.6_
+  - [x] 9.2 Implement partial take profit
+    - Add `check_take_profits()` method
+    - Close 40% at +1.5%, 30% at +2.5%
+    - _Requirements: 6.1-6.2_
+  - [x] 9.3 Write property test for partial exits
+    - **Property 9: Partial Exit Sequence**
+    - **Validates: Requirements 6.1, 6.2**
+  - [x] 9.4 Implement emergency controls
+    - Add `emergency_check()` method
+    - Close all at -5% portfolio, force close at -4% single position
+    - _Requirements: 8.1-8.5_
+  - [x] 9.5 Write property test for emergency exits
+    - **Property 11: Emergency Exit Trigger**
+    - **Validates: Requirements 8.1**
+
+- [x] 10. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 11. Implement Data Hub
+  - [x] 11.1 Create DataHub class
+    - Create `core/data_hub.py` with shared state management
+    - Store positions, account balance, price cache
+    - _Requirements: 9.4, 9.5_
+  - [x] 11.2 Implement WebSocket connection
+    - Add `connect_websocket()` async method
+    - Subscribe to price updates for watchlist
+    - _Requirements: 9.4_
+  - [x] 11.3 Implement OHLCV fetching
+    - Add `get_ohlcv(symbol, timeframe, limit)` method
+    - Cache results to reduce API calls
+    - _Requirements: 2.1_
+  - [x] 11.4 Implement account sync
+    - Add `sync_account()` method
+    - Fetch balance, positions, margin from Binance
+    - _Requirements: 7.2, 7.3_
+
+- [x] 12. Implement Main Engine
+  - [x] 12.1 Create KineticEngine class
+    - Create `engine.py` as main orchestrator
+    - Initialize all modules with dependencies
+    - _Requirements: 9.5_
+  - [x] 12.2 Implement main trading loop
+    - Scanner runs every 60s
+    - Position manager runs every 5s
+    - Analyzer runs on-demand
+    - _Requirements: 9.1, 9.2_
+  - [x] 12.3 Implement logging and metrics
+    - Log all trades with full details
+    - Track win rate, profit factor, average P&L
+    - _Requirements: 10.1-10.5_
+
+- [x] 13. Create run script
+  - [x] 13.1 Create run_v3.py entry point
+    - Parse command line arguments (--live, --capital, --interval)
+    - Initialize engine and start trading loop
+    - Handle graceful shutdown
+    - _Requirements: 10.5_
+
+- [x] 14. Final Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.

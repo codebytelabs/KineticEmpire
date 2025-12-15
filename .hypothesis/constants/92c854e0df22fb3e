@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/models.py
+# hypothesis_version: 6.148.5
+
+[0.0, 0.001, 0.005, 0.02, 0.5, 100, 'PricePoint', 'Trade', 'TradeClose', 'TradeOpen', 'amount', 'bear', 'bull', 'entry_price', 'entry_timestamp', 'exit_price', 'exit_reason', 'exit_timestamp', 'flash_crash', 'id', 'losing_trades', 'manual', 'max_drawdown_pct', 'pair', 'price', 'profit_loss', 'regime', 'sharpe_ratio', 'stake_amount', 'stop_loss', 'timestamp', 'total_return_pct', 'total_trades', 'trade_id', 'trailing_stop', 'trend_break', 'win_rate', 'winning_trades']

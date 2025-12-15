@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/alpha/analytics.py
+# hypothesis_version: 6.148.5
+
+[0.0, 0.5, 100, 250, '%Y-%m-%d', 'LONG', 'avg_hold_time_min', 'avg_pnl', 'avg_r', 'best_trade', 'entry_price', 'entry_time', 'exit_price', 'exit_reason', 'exit_time', 'hold_time_minutes', 'losing_trades', 'max_drawdown', 'pair', 'pnl', 'quantity', 'r_multiple', 'return_pct', 'sharpe_ratio', 'side', 'strategy', 'total_pnl', 'total_trades', 'win_rate', 'winning_trades', 'worst_trade']

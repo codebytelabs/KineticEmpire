@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/alpha/smart_grid.py
+# hypothesis_version: 6.148.5
+
+[0.01, 0.05, 0.5, 0.6, 2.0, 100, 'BUY', 'SELL', 'active_orders', 'allocated_capital', 'center_price', 'completed_trades', 'filled_levels', 'pair', 'profit_pct', 'total_levels', 'total_profit']

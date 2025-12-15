@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/alpha/wave_rider.py
+# hypothesis_version: 6.148.5
+
+[0.001, 0.02, 0.5, 100, '15m', '1d', '1h', '4h', 'BEARISH', 'BULLISH', 'LONG', 'NEUTRAL', 'SHORT', 'atr', 'close', 'ema', 'roc', 'wave_rider']

@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/alpha/pyramiding.py
+# hypothesis_version: 6.148.5
+
+[0.5, 1.0, 'LONG', 'can_pyramid', 'max_pyramids', 'number', 'pair', 'price', 'pyramid_count', 'records', 'size', 'stop', 'time', 'total_added_size']

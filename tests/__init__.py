@@ -1,0 +1,1 @@
+"""Kinetic Empire test suite."""

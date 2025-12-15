@@ -1,0 +1,4 @@
+# file: /Users/vishnuvardhanmedara/KineticEmpire/src/kinetic_empire/indicators/calculator.py
+# hypothesis_version: 6.148.5
+
+[0.0, 100, 288, '_1h', '_1h_merge', '_daily', '_daily_merge', 'atr_14', 'backward', 'close', 'ema_50', 'ffill', 'high', 'index', 'low', 'roc_12', 'rsi_14', 'volume', 'volume_mean_24h']
